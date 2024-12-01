@@ -1,6 +1,6 @@
 import { collection, doc, getDocs, deleteDoc, addDoc, updateDoc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from 'react'
-import { db } from './firebase'
+import { database } from './firebase'
 import './App.css'
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
 
   //docs collection 
   const fetchTasks = async ()=> {
-    const collectionRef = collection(db, 'tasks');
+    const collectionRef = collection(database, 'tasks');
     const querySnapshot = await getDocs(collectionRef);
     const tasks = querySnapshot.docs.map((task) => ({
       id: task.id,
@@ -29,7 +29,7 @@ function App() {
   //delete and remove
   const deleteTask = async (id) => {
 
-    const docRef = doc(db, 'tasks', id)
+    const docRef = doc(database, 'tasks', id)
     await deleteDoc(docRef)
 
     setTasks((prevTasks) => prevTasks.filter(task => task.id !== id))
@@ -38,7 +38,7 @@ function App() {
   // Add
   const addTask = async (e) => {
     e.preventDefault();
-    const collectionRef = collection(db, 'tasks');
+    const collectionRef = collection(database, 'tasks');
     await addDoc(collectionRef, {
       title: title,
       body: body,
@@ -46,7 +46,31 @@ function App() {
     })
     setTitle('')
     setBody('')
-    alert('Task added')
+    alert('Task Added!')
+  }
+
+  const handleStatus = async (id) => {
+    try {
+      const itemRef = doc(database, 'tasks', id);
+      const currentTask = await getDoc(itemRef);
+      const currentStatus = currentTask.data().status;
+      const newStatus = currentStatus === 'pending' ? 'completed' : 'pending'; 
+
+      await updateDoc(itemRef, {
+        status: newStatus, 
+      });
+
+      setTasks((prevTasks) => 
+        prevTasks.map((task)=>
+          task.id === id ?  {...task, status: newStatus } : task
+        )
+      );
+    }
+
+    catch (error) {
+      console.log(error);
+    }
+
   }
 
   return (
@@ -73,7 +97,7 @@ function App() {
             onChange={(e) => setBody(e.target.value)}>
           </textarea>
           
-          <button type="submit" onClick={() => {setTimeout(()=> {window.location.reload()}, 1500)}}>Add task</button>
+          <button type="submit" onClick={() => {setTimeout(()=> {window.location.reload()}, 1500)}}> <span> Add task </span> </button>
         
         </form>
         
@@ -81,18 +105,21 @@ function App() {
 
       {
         tasks.map((task) => (
-          <div key={task.id}> 
+          <div key={task.id} className = "divofdiv"> 
             <div>
-              Task title: {task.title} 
+              Task Title: {task.title} 
             </div>
             <div>
-              Task body: {task.body} 
+              Task Description: {task.body} 
             </div>
             <div>
-              Task status: {task.status} 
+              Task Status 
+              <button onClick={() => {handleStatus(task.id)}}>
+              {task.status} 
+              </button>
             </div>
-            <button onClick={() => deleteTask(task.id)}>
-              Delete task
+            <button className = "disr" onClick={() => deleteTask(task.id)}>
+              Disregard
             </button>
           </div>
           
