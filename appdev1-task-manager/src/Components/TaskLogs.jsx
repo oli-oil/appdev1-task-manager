@@ -2,7 +2,7 @@ import { collection, doc, getDocs, deleteDoc, addDoc, updateDoc, getDoc } from "
 import { useEffect, useState } from 'react'
 import { database } from '../firebase'
 import '../App.css'
-import './SignOut'
+import SignOut from './SignOut';
 
 function TaskLogs() {
   //fetch
@@ -101,7 +101,7 @@ function TaskLogs() {
           <button type="submit" onClick={() => {setTimeout(()=> {window.location.reload()}, 1500)}}> <span> Add task </span> </button>
         
         </form>
-        
+        <SignOut />
       </div>
 
       {
