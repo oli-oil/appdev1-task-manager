@@ -23,25 +23,25 @@ function SignIn() {
 
     const handleSignInWithGoogle = async () => {
         try {
-            await signInWithPopup(auth, email, password)
+            await signInWithPopup(auth, googleProvider)
             alert('Signed In Successfully')
             nav('/TaskLogs')
             
         } catch (error) {
             setError (error)
-        }
+            }
     }
 
     return (
         <>  
-            <h3>Sign In</h3>
+            <h1>Sign In</h1>
                 <form onSubmit = {manageSignIn}>
-                    <input type = "email" required placeholder = "user@email.com" onChange={(e) => {setEmail(e.target.value)}}/>
-                    <input type = "password" required placeholder = "user@email.com" onChange={(e) => {setPassword(e.target.value)}}/>
-                    <button type = "submit">Sign In </button>
+                    <input type = "email" required placeholder = "Enter Email Here" onChange={(e) => {setEmail(e.target.value)}}/>
+                    <input type = "password" required placeholder = "Enter Password Here" onChange={(e) => {setPassword(e.target.value)}}/>
+                    <button type = "submit"> <span> Sign In </span> </button>
                 </form>
 
-                <button onClick = {handleSignInWithGoogle}> Sign In with Google </button>
+                <button onClick = {handleSignInWithGoogle} className = "gButton"> <span>  Sign In with Google </span> </button>
 
                 {error && <p> {error} </p>}
                 <p>Don't have an account? <Link to = "/SignUp"> Sign Up Here</Link></p>

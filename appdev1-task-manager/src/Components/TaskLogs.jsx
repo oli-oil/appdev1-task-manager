@@ -1,7 +1,8 @@
 import { collection, doc, getDocs, deleteDoc, addDoc, updateDoc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from 'react'
-import { database } from './firebase'
-import './App.css'
+import { database } from '../firebase'
+import '../App.css'
+import './SignOut'
 
 function TaskLogs() {
   //fetch

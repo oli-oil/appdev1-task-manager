@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router dom"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import SignIn from "./Components/SignIn.jsx"
 import SignUp from "./Components/SignUp.jsx"
 import { useState, useEffect } from "react"
